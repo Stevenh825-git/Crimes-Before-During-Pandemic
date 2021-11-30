@@ -200,6 +200,166 @@ plt.show()
 
 This graph showcases a huge difference between the amount of cases before and during the pandemic. While the amount of months for each category is unequal, there were only about 6 crimes targetting Asians within 14 months versus almost 160 crimes within 18 months. As a result, it is safe to say there has been an increase in stigmatization towards Asians during the Pandemic. 
 
+### Amout of Hate Crimes Per Borough 
+It is important to investigate which borough experienced the most crimes. For that reason, the following function is required:
+
+```markdown
+#Function to replace any complicated wording for boroughs
+def cleanBorough(borough):
+
+    if borough == 'PATROL BORO BKLYN NORTH':
+        return 'Brooklyn'
+    elif borough == 'PATROL BORO BKLYN SOUTH':
+        return 'Brooklyn'
+    elif borough == 'PATROL BORO BRONX':
+        return 'Bronx'
+    elif borough == 'PATROL BORO MAN NORTH':
+        return 'Manhattan'
+    elif borough == 'PATROL BORO MAN SOUTH':
+        return 'Manhattan'
+    elif borough == "PATROL BORO QUEENS NORTH":
+        return "Queens"
+    elif borough == "PATROL BORO QUEENS SOUTH":
+        return "Queens"
+    else:
+        return 'Staten Island'
+    
+```
+Originally in the dataset, Hate Crimes were seperated by the borough they occurred in. However, it also distinguished between North and South sections of Manhattan, Brooklyn, and Queens. To make things easier, I grouped these sections together. 
+
+```markdown
+#Clean the data
+Hate_Crimes['Patrol Borough Name'] = Hate_Crimes['Patrol Borough Name'].apply(
+                                    cleanBorough)
+
+#Group by month and borough, while counting how many cases for each group
+month_borough = Hate_Crimes.groupby(['Patrol Borough Name','Month Number']).agg(
+       Number_of_Cases=pd.NamedAgg(column="Full Complaint ID", aggfunc="count"))
+month_borough = month_borough.reset_index()
+
+#Create the graph
+month_boro_graph = sns.lmplot(x="Month Number", y="Number_of_Cases", hue="Patrol Borough Name", data=month_borough, fit_reg=(False))
+
+month_boro_graph.set(ylabel = "Number of Cases")
+plt.title("Amount of Hate Crimes per Borough by Month")
+
+
+#Plot the lines connecting the dots
+bronx = month_borough.loc[(month_borough['Patrol Borough Name'] == 'Bronx')]
+plt.plot(bronx["Month Number"],bronx["Number_of_Cases"], 'b')
+
+brooklyn = month_borough.loc[(month_borough['Patrol Borough Name'] == 'Brooklyn')]
+plt.plot(brooklyn["Month Number"],brooklyn["Number_of_Cases"], 'y')
+
+queens = month_borough.loc[(month_borough['Patrol Borough Name'] == 'Queens')]
+plt.plot(queens["Month Number"],queens["Number_of_Cases"], 'r')
+
+manhattan = month_borough.loc[(month_borough['Patrol Borough Name'] == 'Manhattan')]
+plt.plot(manhattan["Month Number"],manhattan["Number_of_Cases"], 'g')
+
+staten = month_borough.loc[(month_borough['Patrol Borough Name'] == 'Staten Island')]
+plt.plot(staten["Month Number"],staten["Number_of_Cases"], 'm')
+
+plt.savefig('HateCrimesPerBorough.png', bbox_inches='tight')
+plt.show()
+```
+This would generate an lmplot where there are 5 colorcoded lines corresponding to one of the 5 boroughs. 
+
+![HateCrimesPerBorough](/Crimes-Before-During-Pandemic/assets/css/HateCrimesPerBorough.png)
+
+This lmplot showcases that the Hate Crime dataset, which spans from 01-01-2019 to 09-30-2021, contains a lot of data for Brookklyn and Manhattan, whereas the Bronx and Staten Island faced the least hate crimes. It is worth noting that the decrease in cases for all 5 boroughs during October to December most likely stems that there weren't any data yet for those months within 2021, thus a decrease in cases occuring during those months overall. 
+
+This lead to the question: How many of the Hate Crimes within this graph occured before the Pandemic?
+
+```markdown
+#Goal is to group the data by the borough, but also if it occured before or during the pandemic 
+
+#Need to set the dates to a datetime object
+Hate_Crimes['Record Create Date'] = pd.to_datetime(Hate_Crimes['Record Create Date'])
+#Apply the previous function used for Anti-Asian crimes to the entire dataset
+Hate_Crimes['Before/During Pandemic'] = prepostPandemic(Hate_Crimes)
+
+#Group by the Borough and whether the crime occurred before or during the pandemic
+preduring_borough = Hate_Crimes.groupby(['Patrol Borough Name','Before/During Pandemic']).agg(
+       Number_of_Cases=pd.NamedAgg(column="Full Complaint ID", aggfunc="count"))
+preduring_borough = preduring_borough.reset_index()
+
+#create the graph
+plt.figure(figsize=(8,4))
+boroughPrepost = sns.barplot(x ="Patrol Borough Name",y="Number_of_Cases",
+                          hue = "Before/During Pandemic", data=preduring_borough)
+title = "(01/15/2019 - 03/10/2020) vs (03/11/2020 - 09/30/2021)"
+
+boroughPrepost.set(xlabel = "Borough",ylabel = "Number of Cases")
+boroughPrepost.set_title(title)
+plt.suptitle("Amount of Hate Crimes Before & During the Pandemic")
+plt.savefig('HateCrimesBeforeDuringPandemic.png', bbox_inches='tight')
+plt.show()
+```
+![HateCrimesBeforeDuringPandemic](/Crimes-Before-During-Pandemic/assets/css/HateCrimesBeforeDuringPandemic.png)
+
+This graph shows clearly how many Hate Crimes each borough experienced. One can easily see that Brooklyn and Manhattan are completely dominating the other boroughs, regardless if the case occured before or during the pandemic. 
+
+It is also worth noting that Manhattan experiences way more Hate Crimes during the Pandemic than any other borough. 
+
+### Logistic Regression Model First Attempt 
+
+The goal is to see if a logistic regression could be used to predict whether a Hate Crime's motive is Anti-Asian using the month in the year.
+
+```markdown
+
+
+#First needed to use get_dummies() to be able to use categorical data in the analysis
+temp = pd.get_dummies(Hate_Crimes['Bias Motive Description'])
+
+#This column will determine if a Hate Crime is Anti-Asian or not
+Hate_Crimes['ANTI-ASIAN'] = temp['ANTI-ASIAN']
+
+
+#Split the data to have a training set for the model and a testing set
+
+X_train, X_test, y_train, y_test = train_test_split(Hate_Crimes['Month Number'].to_numpy(),Hate_Crimes['ANTI-ASIAN'],test_size=0.4,random_state=42)
+
+#Run the model on the training data
+
+X_train = X_train.reshape(-1, 1)
+X_test = X_test.reshape(-1, 1)
+
+clf = LogisticRegression()
+clf.fit(X_train, y_train)
+
+#Obtain the score of the model using the testing set
+score = clf.score(X_test,y_test) 
+
+y_predict = clf.predict(X_test)
+
+confuse_mx = metrics.confusion_matrix(y_test,y_predict,labels=[1,0])
+#print(confuse_mx)
+
+bad_logisitic_model =sns.heatmap(confuse_mx, square=True, annot=True, fmt='d', 
+                                 cbar=True,linewidths=0.2,
+                                 xticklabels=['Anti-Asian', "Not Anti-Asian"],
+                                 yticklabels=['Anti-Asian', "Not Anti-Asian"],
+                                )
+
+
+plt.xlabel('True Label',fontsize=18)
+plt.ylabel("Prediced Label",fontsize=18)
+plt.title("Score: 0.87", fontsize=14)
+plt.suptitle("Whether a General Hate Crime is Anti-Asian", fontsize=20)
+
+plt.savefig('WhetherCrimeAntiAsian.png', bbox_inches='tight')
+
+plt.show()
+```
+
+![WhetherCrimeAntiAsian](/Crimes-Before-During-Pandemic/assets/css/WhetherCrimeAntiAsian.png)
+
+![HateCrimeLogisticModel1](/Crimes-Before-During-Pandemic/assets/css/HateCrimeLogisticModel1.png)
+
+
+
+
 ![Crimes During Pandemic](/Crimes-Before-During-Pandemic/assets/css/CrimesDuringPandemic.png)
 
 ![Crimes Before Pandemic](/Crimes-Before-During-Pandemic/assets/css/CrimesPrePandemic.png)
@@ -209,13 +369,9 @@ This graph showcases a huge difference between the amount of cases before and du
 
 ![GenderBeforeDuring](/Crimes-Before-During-Pandemic/assets/css/GenderBeforeDuring.png)
 
-![HateCrimeLogisticModel1](/Crimes-Before-During-Pandemic/assets/css/HateCrimeLogisticModel1.png)
+
 
 ![HateCrimeLogisticModel2](/Crimes-Before-During-Pandemic/assets/css/HateCrimeLogisticModel2.png)
-
-![HateCrimesBeforeDuringPandemic](/Crimes-Before-During-Pandemic/assets/css/HateCrimesBeforeDuringPandemic.png)
-
-![HateCrimesPerBorough](/Crimes-Before-During-Pandemic/assets/css/HateCrimesPerBorough.png)
 
 
 ![PrecinctCrimesBorough](/Crimes-Before-During-Pandemic/assets/css/PrecinctCrimesBorough.png)
@@ -228,11 +384,7 @@ This graph showcases a huge difference between the amount of cases before and du
 ![Pie2](/Crimes-Before-During-Pandemic/assets/css/Pie2.png)
 
 
-
 ![PrecinctCrimesOccurance](/Crimes-Before-During-Pandemic/assets/css/PrecinctCrimesOccurance.png)
 
-
-
-![WhetherCrimeAntiAsian](/Crimes-Before-During-Pandemic/assets/css/WhetherCrimeAntiAsian.png)
 
 ![WhetherRaceCrimeAntiAsian](/Crimes-Before-During-Pandemic/assets/css/WhetherRaceCrimeAntiAsian.png)
