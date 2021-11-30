@@ -36,5 +36,42 @@ Your Pages site will use the layout and styles from the Jekyll theme you have se
 
 Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
 
-![Book logo](/Crimes-Before-During-Pandemic/assets/css/FC_Nonona.png)
+![Anti Asian](/Crimes-Before-During-Pandemic/assets/css/AntiAsian.png)
+
+![Crimes During Pandemic](/Crimes-Before-During-Pandemic/assets/css/CrimesDuringPandemic.png)
+
+![Crimes Before Pandemic](/Crimes-Before-During-Pandemic/assets/css/CrimesPrePandemic.png)
+
+![Crimes Before and During Pandemic](/Crimes-Before-During-Pandemic/assets/css/CrimesPreDuringPandemic.png)
+
+![DimensionPCA](/Crimes-Before-During-Pandemic/assets/css/DimensionsForPCA.png)
+
+![GenderBeforeDuring](/Crimes-Before-During-Pandemic/assets/css/GenderBeforeDuring.png)
+
+![HateCrimeLogisticModel1](/Crimes-Before-During-Pandemic/assets/css/HateCrimeLogisticModel1.png)
+
+![HateCrimeLogisticModel2](/Crimes-Before-During-Pandemic/assets/css/HateCrimeLogisticModel2.png)
+
+![HateCrimesBeforeDuringPandemic](/Crimes-Before-During-Pandemic/assets/css/HateCrimesBeforeDuringPandemic.png)
+
+![HateCrimesPerBorough](/Crimes-Before-During-Pandemic/assets/css/HateCrimesPerBorough.png)
+
+![PCAForHateCrimes](/Crimes-Before-During-Pandemic/assets/css/PCAForHateCrimes.png)
+
+![PrecinctCrimesBorough](/Crimes-Before-During-Pandemic/assets/css/PrecinctCrimesBorough.png)
+
+![PrecinctCrimesOccurance](/Crimes-Before-During-Pandemic/assets/css/PrecinctCrimesOccurance)
+
+![TypeofHateCrimes](/Crimes-Before-During-Pandemic/assets/css/TypeofHateCrimes)
+
+![TypeofRaceHateCrimes](/Crimes-Before-During-Pandemic/assets/css/TypeofRaceHateCrimes.png)
+
+![WhetherCrimeAntiAsian](/Crimes-Before-During-Pandemic/assets/css/WhetherCrimeAntiAsian)
+
+![WhetherRaceCrimeAntiAsian](/Crimes-Before-During-Pandemic/assets/css/WhetherRaceCrimeAntiAsian)
+
+![Pie1](/Crimes-Before-During-Pandemic/assets/css/Pie1.png)
+
+![Pie2](/Crimes-Before-During-Pandemic/assets/css/Pie2.png)
+
 
