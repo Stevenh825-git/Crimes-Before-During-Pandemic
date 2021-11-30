@@ -307,8 +307,6 @@ It is also worth noting that Manhattan experiences way more Hate Crimes during t
 The goal is to see if a logistic regression could be used to predict whether a Hate Crime's motive is Anti-Asian using the month in the year.
 
 ```markdown
-
-
 #First needed to use get_dummies() to be able to use categorical data in the analysis
 temp = pd.get_dummies(Hate_Crimes['Bias Motive Description'])
 
@@ -327,21 +325,26 @@ X_test = X_test.reshape(-1, 1)
 
 clf = LogisticRegression()
 clf.fit(X_train, y_train)
+```
 
+Now that the model has been trained, it is important to see how well this model performs through getting its score and setting up a confusion matrix.
+
+
+```markdown
 #Obtain the score of the model using the testing set
 score = clf.score(X_test,y_test) 
 
 y_predict = clf.predict(X_test)
 
+#Building the confusion matrix
 confuse_mx = metrics.confusion_matrix(y_test,y_predict,labels=[1,0])
-#print(confuse_mx)
 
+#Graph the confusion matrix using a heatmap
 bad_logisitic_model =sns.heatmap(confuse_mx, square=True, annot=True, fmt='d', 
                                  cbar=True,linewidths=0.2,
                                  xticklabels=['Anti-Asian', "Not Anti-Asian"],
                                  yticklabels=['Anti-Asian', "Not Anti-Asian"],
                                 )
-
 
 plt.xlabel('True Label',fontsize=18)
 plt.ylabel("Prediced Label",fontsize=18)
@@ -352,13 +355,72 @@ plt.savefig('WhetherCrimeAntiAsian.png', bbox_inches='tight')
 
 plt.show()
 ```
-
 ![WhetherCrimeAntiAsian](/Crimes-Before-During-Pandemic/assets/css/WhetherCrimeAntiAsian.png)
+
+This confusion matrix showcases that while the model does have an impressive score of 0.87, it never predicted whether the crime was Anti-Asian correctly. Therefore, it raises suspision that the only reason it scored so high, was because the majority of cases weren't Anti-Asian in the dataset. As a result, the model was going to be correct most of the time. 
+
+Now it is best to represent the data and the logistic regression model's predicted probability through a lmplot, where 0 would be when the case isn't Anti-Asian and 1 it is. There would a line through the graph, showcasing the model's determined probability of the case being Anti-Asian, depending on the month the case occured. 
+
+```markdown
+#Obtain the columns necessary
+data = Hate_Crimes[['ANTI-ASIAN']]
+data['Month Number'] = Hate_Crimes['Month Number']
+
+#Create a different jitter function to remove overlap for this data
+def jitter_df2(df, x_col, y_col):
+    x_jittered = df[x_col] + np.random.normal(scale=0, size=len(df))
+    y_jittered = df[y_col] + np.random.normal(scale=0.05, size=len(df))
+    return df.assign(**{x_col: x_jittered, y_col: y_jittered})
+
+#Create the graph with the columns
+bad_lm_pred = sns.lmplot(x='Month Number', y='ANTI-ASIAN',
+           data=jitter_df2(data,'Month Number','ANTI-ASIAN'),
+           fit_reg=False)
+
+#This will be the X values used to predict
+xs = np.linspace(-1, 13, 100)
+#Predict the Y's
+ys = clf.predict_proba(xs.reshape(-1, 1))[:, 1]
+
+#Plot the line
+plt.plot(xs, ys)
+plt.title("Hate Crime Data and Predicted Probability")
+plt.savefig('HateCrimeLogisticModel1.png', bbox_inches='tight')
+plt.show()          
+```
 
 ![HateCrimeLogisticModel1](/Crimes-Before-During-Pandemic/assets/css/HateCrimeLogisticModel1.png)
 
+This graph then showcases that no matter the month, the model is going to predict that the case isn't Anti-Asian. As a result, this shows that the month cannot be an indicator of whether a Hate Crime is Anti-Asian. 
+
+### Second Attempt at creating a Logistic Model 
+
+This time, the goal is to investigate whether a ***race-related*** Hate Crime is Anti-Asian. Using similar code, the two following graphs are generated:
 
 
+![WhetherRaceCrimeAntiAsian](/Crimes-Before-During-Pandemic/assets/css/WhetherRaceCrimeAntiAsian.png)
+
+
+![HateCrimeLogisticModel2](/Crimes-Before-During-Pandemic/assets/css/HateCrimeLogisticModel2.png)
+
+Unlike before, the confusion matrix here is showing that the model is capable of predicting a case is Anti-Asian correctly, by using the month the case occured. However, unlike before, the accuracy of the model has suffered by having a 0.52 score. 
+
+Additionally, the second graph showcases the model is a lot more capable of predicting a case as Anti-Asian. After all, it shows that there is more than a 50% chance a race related hate crime is Anti-Asian if it occurred between January-March. Yet, this entire model can be disregarded because of its poor score. 
+
+Therefore, once again, the month a case occurred cannot be used to predict whether a race motivated crime is Anti-Asian. 
+
+## How were the amount of crimes affected by the Pandemic?
+
+Unlike before, where the data so far was focused on Hate Crimes, this time the data encompasses all types of crimes. The goal now is to see how these cases are distributed amongst different groups of people.
+
+### Differences Amongst Gender
+
+
+
+![GenderBeforeDuring](/Crimes-Before-During-Pandemic/assets/css/GenderBeforeDuring.png)
+
+
+### Temp
 
 ![Crimes During Pandemic](/Crimes-Before-During-Pandemic/assets/css/CrimesDuringPandemic.png)
 
@@ -367,17 +429,7 @@ plt.show()
 ![Crimes Before and During Pandemic](/Crimes-Before-During-Pandemic/assets/css/CrimesPreDuringPandemic.png)
 
 
-![GenderBeforeDuring](/Crimes-Before-During-Pandemic/assets/css/GenderBeforeDuring.png)
-
-
-
-![HateCrimeLogisticModel2](/Crimes-Before-During-Pandemic/assets/css/HateCrimeLogisticModel2.png)
-
-
-![PrecinctCrimesBorough](/Crimes-Before-During-Pandemic/assets/css/PrecinctCrimesBorough.png)
-
-
-
+### Temp
 
 ![Pie1](/Crimes-Before-During-Pandemic/assets/css/Pie1.png)
 
@@ -386,5 +438,5 @@ plt.show()
 
 ![PrecinctCrimesOccurance](/Crimes-Before-During-Pandemic/assets/css/PrecinctCrimesOccurance.png)
 
+![PrecinctCrimesBorough](/Crimes-Before-During-Pandemic/assets/css/PrecinctCrimesBorough.png)
 
-![WhetherRaceCrimeAntiAsian](/Crimes-Before-During-Pandemic/assets/css/WhetherRaceCrimeAntiAsian.png)
