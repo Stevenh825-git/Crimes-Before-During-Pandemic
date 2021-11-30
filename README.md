@@ -60,18 +60,23 @@ Having trouble with Pages? Check out our [documentation](https://docs.github.com
 
 ![PrecinctCrimesBorough](/Crimes-Before-During-Pandemic/assets/css/PrecinctCrimesBorough.png)
 
-![PrecinctCrimesOccurance](/Crimes-Before-During-Pandemic/assets/css/PrecinctCrimesOccurance)
 
-![TypeofHateCrimes](/Crimes-Before-During-Pandemic/assets/css/TypeofHateCrimes)
 
 ![TypeofRaceHateCrimes](/Crimes-Before-During-Pandemic/assets/css/TypeofRaceHateCrimes.png)
 
-![WhetherCrimeAntiAsian](/Crimes-Before-During-Pandemic/assets/css/WhetherCrimeAntiAsian)
 
-![WhetherRaceCrimeAntiAsian](/Crimes-Before-During-Pandemic/assets/css/WhetherRaceCrimeAntiAsian)
 
 ![Pie1](/Crimes-Before-During-Pandemic/assets/css/Pie1.png)
 
 ![Pie2](/Crimes-Before-During-Pandemic/assets/css/Pie2.png)
 
 
+
+![PrecinctCrimesOccurance](/Crimes-Before-During-Pandemic/assets/css/PrecinctCrimesOccurance)
+
+![TypeofHateCrimes](/Crimes-Before-During-Pandemic/assets/css/TypeofHateCrimes)
+
+
+![WhetherCrimeAntiAsian](/Crimes-Before-During-Pandemic/assets/css/WhetherCrimeAntiAsian)
+
+![WhetherRaceCrimeAntiAsian](/Crimes-Before-During-Pandemic/assets/css/WhetherRaceCrimeAntiAsian)
