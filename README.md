@@ -409,34 +409,214 @@ Additionally, the second graph showcases the model is a lot more capable of pred
 
 Therefore, once again, the month a case occurred cannot be used to predict whether a race motivated crime is Anti-Asian. 
 
-## How were the amount of crimes affected by the Pandemic?
+## How were all crimes affected by the Pandemic?
 
 Unlike before, where the data so far was focused on Hate Crimes, this time the data encompasses all types of crimes. The goal now is to see how these cases are distributed amongst different groups of people.
 
+Before investigations begin, it is important to clean the data first. Using the two datasets: ____ and ______, the code below gets the information ready. 
+
+```markdown
+
+# Fix the last column to match name, they're the same but named differently
+ArrestDataHistoric = ArrestDataHistoric.rename(columns={"Lon_Lat": "New Georeferenced Column"})
+
+
+#Convert the arrest date to datetime  
+ArrestDataHistoric['ARREST_DATE'] = pd.to_datetime(ArrestDataHistoric['ARREST_DATE'])
+
+ArrestDataCurrent['ARREST_DATE'] = pd.to_datetime(ArrestDataCurrent['ARREST_DATE'])
+
+
+#Obtain the data from 03/11/2018 - 09/30/2019, when the pandemic wasn't a thing yet. 
+Arrest_Pre_Pandemic = ArrestDataHistoric.loc[(ArrestDataHistoric['ARREST_DATE'] >= "03/11/2018")
+                                     & (ArrestDataHistoric['ARREST_DATE'] <= '09/30/2019')]
+
+
+#Grab the dates from start of the pandemic (2020) within Historic
+#ArrestDataCurrent doesn't contain the dates of the pandemic within 2020
+#Dates added will be from 03/11/2020 - 12/31/2020
+
+start_of_pandemic = "03/11/2020"
+
+Arrest_Pandemic_Start = ArrestDataHistoric.loc[(ArrestDataHistoric['ARREST_DATE'] >= start_of_pandemic)]
+
+# so take the 2020 year arrest data and add those rows to the current arrest data
+Pandemic_Arrests  = ArrestDataCurrent.append(Arrest_Pandemic_Start)
+
+#Pandemic_Arrests['Year'] = Pandemic_Arrests['ARREST_DATE'].dt.year
+
+```
+
+Now there are two dataframes, where one hold all the arrests between 03/11/2018 - 09/30/2019, and the other holding cases from 03/11/2020 - 09/30/2020
+
+
 ### Differences Amongst Gender
 
+After obtaining data showcasing the amount of cases per borough, seperated by gender for both before the pandemic and during, the goal is to showcase the data in 4 seperate columns on a bar graph. 
 
+```markdown
+
+#Obtain the columns containing the amount of cases per borough where the perpretrator was male or female
+boroughGender = boroughPrePandemic[['Perp_Female', 'Perp_Male']]
+#Rename the columns to showcase it is data from before the pandemic
+boroughGender = boroughGender.rename(columns={"Perp_Female": "Female (Pre-Pandemic)",
+                                              "Perp_Male": "Male (Pre-Pandemic)" })
+                                              
+#Obtain the data for during the pandemic
+boroughGender['Female (Pandemic)'] = boroughPandemic['Perp_Female']
+boroughGender['Male (Pandemic)'] = boroughPandemic['Perp_Male']
+
+#Sneaky way to get all the columns, but no rows
+genSum = boroughGender[0:0]
+genSum=genSum.reset_index(drop=True)
+
+#Obtain the sum of each column
+colsum = boroughGender.sum(axis=0)
+
+#Add the sums as a row in genSum
+genSum =genSum.append(colsum, ignore_index= True)
+
+borogen_plt = sns.barplot(data=genSum, 
+                          order=["Female (Pre-Pandemic)", "Female (Pandemic)",
+                                 'Male (Pre-Pandemic)', 'Male (Pandemic)'])
+plt.suptitle('Crimes Committed Before vs. During Pandemic',fontsize=20)
+plt.title("Seperated by Gender",fontsize=18)
+plt.ylabel('Number of Cases', fontsize=15)
+borogen_plt.set_xticklabels(borogen_plt.get_xticklabels(),
+                            rotation=30, ha="right")
+
+plt.savefig('GenderBeforeDuring.png', bbox_inches='tight')
+plt.show()
+
+```
 
 ![GenderBeforeDuring](/Crimes-Before-During-Pandemic/assets/css/GenderBeforeDuring.png)
 
+As a result, the data showcases that there was a decrease in the amount of crimes overall for both genders during the pandemic. This could be because the Pandemic caused less people to travel outdoors, thus less accidents. Meanwhile, males clearly performed more crimes than females overall. 
 
-### Temp
+### Gender, Borough, and Number of Crimes
 
-![Crimes During Pandemic](/Crimes-Before-During-Pandemic/assets/css/CrimesDuringPandemic.png)
+It is important to visualize how the amount of crimes differed between before and during the pandemic. For that reason, the data is going to be grouped in two ways: By borough and Gender. This way, it will further showcase the differences between Sex while highlighting the differences between the boroughs. 
+
+Firstly, the code below will showcase how the data before the pandemic looks. 
+
+```markdown
+#Group the data
+preboro = Arrest_Pre_Pandemic.groupby(["ARREST_BORO","PERP_SEX"]).count()
+preboro = preboro.reset_index()
+
+#Plot the data with a barplot
+#y is ARREST_KEY since the groupby contained count(), thus highlighting how many cases there were in each group
+
+borogen_plt = sns.barplot(x="ARREST_BORO", y ="ARREST_KEY", hue = "PERP_SEX",data=preboro,
+                          palette=['indianred','goldenrod'])
+
+plt.suptitle('Crimes Pre-Pandemic (03/11/2018 - 09/30/2019)', fontsize=20)
+
+plt.xlabel('Borough', fontsize=17)
+plt.ylabel('Number of Cases', fontsize=15)
+
+borogen_plt.set_xticklabels(["Bronx", "Brooklyn", "Manhattan","Queens","Staten Island"])
+legend = borogen_plt.get_legend()
+legend.set_title("Perpetrator Sex")
+plt.savefig('CrimesPrePandemic.png', bbox_inches='tight')
+plt.show()
+
+```
 
 ![Crimes Before Pandemic](/Crimes-Before-During-Pandemic/assets/css/CrimesPrePandemic.png)
 
+This graph reveals that in each borough, males perform a lot more crimes. Furthermore, Brooklyn faced the most crimes, while Staten Isalnd faced the least. It is worth noting that women never exceeded 20000 crimes, while in Brooklyn males performed over 80000. 
+
+Now the code will show how this changed during the Pandemic. 
+
+```markdown
+
+#Group the data
+during_boro = Pandemic_Arrests.groupby(["ARREST_BORO","PERP_SEX"]).count()
+during_boro = during_boro.reset_index()
+
+#Create the Graph
+borogen_plt = sns.barplot(x="ARREST_BORO", y ="ARREST_KEY", hue = "PERP_SEX",data=during_boro,
+                          palette=['Red','darkslategrey'])
+
+#Edit the graph
+plt.suptitle('Crimes During Pandemic (03/11/2020 - 09/30/2021)', fontsize=20)
+
+plt.xlabel('Borough', fontsize=17)
+plt.ylabel('Number of Cases', fontsize=15)
+
+borogen_plt.set_xticklabels(["Bronx", "Brooklyn", "Manhattan","Queens","Staten Island"])
+legend = borogen_plt.get_legend()
+legend.set_title("Perpetrator Sex")
+plt.savefig('CrimesDuringPandemic.png', bbox_inches='tight')
+plt.show()
+ ```
+
+![Crimes During Pandemic](/Crimes-Before-During-Pandemic/assets/css/CrimesDuringPandemic.png)
+
+Interestingly, at first glance the pattern of the graph looks near identical to the previous. Like before, Brooklyn contains the most cases, while Staten Island faced the least. However, it is worth paying attention to the scale. The scale showcases the crimes within each borough decreased significantly. 
+
+To highlight the differences, the code below will overlap the two graphs. The goal was to plot both graphs onto the same figure. 
+
+```markdown
+
+#This is near identical to the first graph's code:
+
+preboro = Arrest_Pre_Pandemic.groupby(["ARREST_BORO","PERP_SEX"]).count()
+preboro = preboro.reset_index()
+borogen_plt = sns.barplot(x="ARREST_BORO", y ="ARREST_KEY", hue = "PERP_SEX",data=preboro,
+                          palette=['indianred','goldenrod'])
+
+plt.suptitle('Crimes Pre-Pandemic (03/11/2018 - 09/30/2019)', fontsize=20)
+
+plt.xlabel('Borough', fontsize=17)
+plt.ylabel('Number of Cases', fontsize=15)
+
+borogen_plt.set_xticklabels(["Bronx", "Brooklyn", "Manhattan","Queens","Staten Island"])
+
+
+
+#This is near identical to the second graph's code:
+
+during_boro = Pandemic_Arrests.groupby(["ARREST_BORO","PERP_SEX"]).count()
+during_boro = during_boro.reset_index()
+borogen_plt = sns.barplot(x="ARREST_BORO", y ="ARREST_KEY", hue = "PERP_SEX",data=during_boro,
+                          palette=['Red','darkslategrey'])
+
+plt.suptitle('Crimes Pre/During Pandemic (03/11/2018 - 09/30/2021)', fontsize=20)
+
+plt.xlabel('Borough', fontsize=17)
+plt.ylabel('Number of Cases', fontsize=15)
+
+borogen_plt.set_xticklabels(["Bronx", "Brooklyn", "Manhattan","Queens","Staten Island"])
+
+#Needed to alter the legend to make sure it is labeled correctly for each bar
+
+plt.legend(title='Perpetrator Sex', loc='upper right', labels=['F Pre-Pandemic', 'M Pre-Pandemic', 
+                                                               'F Pandemic', 'M Pandemic'],
+           bbox_to_anchor= (1.25, 1) )
+
+#Set the colors of the legend so it matches with the colors of the bars
+legend = borogen_plt.get_legend()
+legend.legendHandles[0].set_color('indianred')
+legend.legendHandles[1].set_color('goldenrod')
+legend.legendHandles[2].set_color('red')
+legend.legendHandles[3].set_color('darkslategrey')
+
+plt.savefig('CrimesPreDuringPandemic.png', bbox_inches='tight')
+plt.show()
+```
+
 ![Crimes Before and During Pandemic](/Crimes-Before-During-Pandemic/assets/css/CrimesPreDuringPandemic.png)
 
+This graph then clarifies the huge differences in the amount of crimes before and during the pandemic. While the pattern is similar, the crimes faced during the Pandemic is cut almost half it was before. 
 
-### Temp
+### Highlighting How Many Crimes Were Committed By A Member of Each Race
 
 ![Pie1](/Crimes-Before-During-Pandemic/assets/css/Pie1.png)
 
 ![Pie2](/Crimes-Before-During-Pandemic/assets/css/Pie2.png)
 
 
-![PrecinctCrimesOccurance](/Crimes-Before-During-Pandemic/assets/css/PrecinctCrimesOccurance.png)
-
-![PrecinctCrimesBorough](/Crimes-Before-During-Pandemic/assets/css/PrecinctCrimesBorough.png)
 
