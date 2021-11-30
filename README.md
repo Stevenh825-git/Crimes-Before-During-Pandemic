@@ -1,8 +1,5 @@
 ## Crimes Before/During The Pandemic
 
-You can use the [editor on GitHub](https://github.com/Stevenh825-git/Crimes-Before-During-Pandemic/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
 ### Markdown
 
@@ -28,15 +25,7 @@ Syntax highlighted code block
 
 For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
 
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Stevenh825-git/Crimes-Before-During-Pandemic/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
-
-###Identifying whether a PCA analysis can be done
+### Identifying whether a PCA analysis can be done
 
 The goal is to see whether a 2 dimensional graph is enough to showcase patterns in the data using PCA. 
 
@@ -64,9 +53,9 @@ This was the code used to generate the following graph:
 As a result, 2 dimensions is capable of showcasing the data's patterns. Or more specifically, 2 dimensions can be used to determine the spread of the different types of Hate Crimes. 
 
 
-###Performing a PCA Analysis on the Data
+### Performing a PCA Analysis on the Data
 
-![PCAForHateCrimes](/Crimes-Before-During-Pandemic/assets/css/PCAForHateCrimes.png)
+Now that we now this, we can generate the principal components from performaing matrix multiplication with U and S; where they were both created from the SVD funciton earlier.
 
 ```markdown
 #Compute the first two principal components needed for PCA
@@ -96,8 +85,120 @@ plt.suptitle('PCA For Hate Crimes', fontsize=20)
 plt.savefig('PCAForHateCrimes.png', bbox_inches='tight')
 plt.show()
 ```
+This code will create:
 
+![PCAForHateCrimes](/Crimes-Before-During-Pandemic/assets/css/PCAForHateCrimes.png)
+
+As a result, the data is grouped into 4 clusters. This visualization showcases that there are 3 main groups of Hate Crimes: Sexual Orientation, Religion, and Race. However, it also shows that there are plenty of other Hate Crimes that do not fall within these categories. 
+
+### Types of Hate Crimes
+
+Now that we see the pattern of the data, it is important to view how many of each type of Hate Crimes from 01-01-2019 to 09-30-2021 there actually are. 
+
+Using the following code:
+```markdown
+
+#Can group by Offense Category and count how many of type of hate crime there are
+
+amount_crimes = Hate_Crimes.groupby('Offense Category').agg(
+       Number_of_Cases=pd.NamedAgg(column="Full Complaint ID", aggfunc="count"))
+
+hate_crime_graph = sns.barplot(x =amount_crimes.index,y="Number_of_Cases", data=amount_crimes)
+hate_crime_graph.set_xticklabels(hate_crime_graph.get_xticklabels(), rotation=45, ha="right")
+
+plt.ylabel("Number of Cases",fontsize=14)
+plt.xlabel("Offense Category", fontsize=14)
+
+hate_crime_graph.set_title("Different Types of Hate Crimes(2019-2021)", fontsize=20)
+plt.savefig('TypeofHateCrimes.png', bbox_inches='tight')
+plt.show()
+```
+
+![TypeofHateCrimes](/Crimes-Before-During-Pandemic/assets/css/TypeofHateCrimes.png)
+
+This graph showcases that similarly to the PCA, religion, race, and sexual orientation were the 3 biggest motivators for hate crimes. However, it also shows that there were still plenty of ethnicity and gender motivated crimes. 
+
+### Different Race Motivated Hate Crimes
+
+Now that it is clear there are plenty of differnt Hate Crimes, it is important to understand these are all categories. As a result, there are plenty of different type of race motivated crimes. Therefore, it is importnat to see which race was the most targeted from 2019-2021. 
+
+```markdown
+
+#Get the rows exclusive to Race/Color and Ethnicity
+race_ethni_crimes = Hate_Crimes.loc[(Hate_Crimes['Offense Category'] == 'Race/Color') | (Hate_Crimes['Offense Category'] == 'Ethnicity/National Origin/Ancestry')]
+
+#Group the data by Bias Motive Descirption, which is the reason for the Hate Crime. Also, count how many cases of each group there are. 
+amount_race = race_ethni_crimes.groupby('Bias Motive Description').agg(
+       Number_of_Cases=pd.NamedAgg(column="Full Complaint ID", aggfunc="count"))
+
+race_graph = sns.barplot(x =amount_race.index,y="Number_of_Cases", data=amount_race)
+race_graph.set_xticklabels(race_graph.get_xticklabels(), rotation=45, ha="right")
+plt.xlabel("Motive", fontsize=18)
+plt.ylabel("Number of Cases", fontsize=18)
+
+race_graph.set_title("Different Types of Race Motivated Hate Crimes(2019-2021)",
+                     fontsize=20)
+plt.savefig('TypeofRaceHateCrimes.png', bbox_inches='tight')
+plt.show()
+```
+
+![TypeofRaceHateCrimes](/Crimes-Before-During-Pandemic/assets/css/TypeofRaceHateCrimes.png)
+
+This showcases that from 2019 to 2021, there have been an overwhelming amount of Anti-Asian motivated Hate Crimes.In fact, other than Anti-Black crimes, Anti-Asian Hate Crimes dominate the graph. However, how much of these cases had occured before the pandemic?
+
+### Anti-Asian Crimes Before and During the Pandemic
+
+Before we can investigate, the data needs to be cleaned. 
+
+```markdown
+#Set the data found in Record Create Date to datetime objects. 
+race_ethni_crimes['Record Create Date'] = pd.to_datetime(race_ethni_crimes['Record Create Date'])
+
+#Obtain all of the Hate Crimes that were targetting Asians. 
+anti_asian = race_ethni_crimes.loc[race_ethni_crimes['Bias Motive Description'] == "ANTI-ASIAN"]
+
+#This function will determine whether the dates within a column happened before Covid-19 was declared by WHO, or during the Pandemic.
+def prepostPandemic(date):
+    
+    temp = date['Record Create Date']
+    temp2 = []
+    start = "03/11/2020"
+    start = datetime.strptime(start, "%m/%d/%Y")
+    
+    for day in temp:
+        if day < start:
+            temp2.append("Before")
+        else:
+            temp2.append("During")
+    return temp2
+
+#A new column will hold the information whether a crime occured before or during the pandemic
+anti_asian['Before/During Pandemic'] = prepostPandemic(anti_asian)
+```
+
+
+```markdown
+#Now it is easier to group the crimes by their occurance, and count how many of each there are
+temp = anti_asian.groupby('Before/During Pandemic').agg(
+       Number_of_Cases=pd.NamedAgg(column="Full Complaint ID", aggfunc="count"))
+
+
+asian_cases = sns.barplot(x =temp.index,y="Number_of_Cases", data=temp)
+xes = ["01/15/2019 - 03/10/2020", "03/11/2020 - 09/23/2021"]
+asian_cases.set_xticklabels(xes,fontsize=18)
+
+asian_cases.set_title("Amount of Anti-Asian Cases Before & During the Pandemic",
+                      fontsize=20)
+
+plt.xlabel("Before/During Pandemic", fontsize=18)
+plt.ylabel("Number of Cases", fontsize=18)
+
+plt.savefig('AntiAsian.png', bbox_inches='tight')
+plt.show()
+```
 ![Anti Asian](/Crimes-Before-During-Pandemic/assets/css/AntiAsian.png)
+
+This graph showcases a huge difference between the amount of cases before and during the pandemic. While the amount of months for each category is unequal, there were only about 6 crimes targetting Asians within 14 months versus almost 160 crimes within 18 months. As a result, it is safe to say there has been an increase in stigmatization towards Asians during the Pandemic. 
 
 ![Crimes During Pandemic](/Crimes-Before-During-Pandemic/assets/css/CrimesDuringPandemic.png)
 
@@ -121,9 +222,6 @@ plt.show()
 
 
 
-![TypeofRaceHateCrimes](/Crimes-Before-During-Pandemic/assets/css/TypeofRaceHateCrimes.png)
-
-
 
 ![Pie1](/Crimes-Before-During-Pandemic/assets/css/Pie1.png)
 
@@ -133,7 +231,6 @@ plt.show()
 
 ![PrecinctCrimesOccurance](/Crimes-Before-During-Pandemic/assets/css/PrecinctCrimesOccurance.png)
 
-![TypeofHateCrimes](/Crimes-Before-During-Pandemic/assets/css/TypeofHateCrimes.png)
 
 
 ![WhetherCrimeAntiAsian](/Crimes-Before-During-Pandemic/assets/css/WhetherCrimeAntiAsian.png)
