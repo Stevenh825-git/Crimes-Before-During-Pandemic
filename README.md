@@ -6,7 +6,8 @@ Name: Steven Hernandez
 
 [Github](https://github.com/Stevenh825-git)
 
-[Website Link](https://stevenh825-git.github.io/Crimes-Before-During-Pandemic/)
+[Website Link](https://stevenh825-git.github.io/Crimes-Before-During-Pandemic/) 
+https://stevenh825-git.github.io/Crimes-Before-During-Pandemic/
 
 ### Completed:
 - Included all of the visualizations made
