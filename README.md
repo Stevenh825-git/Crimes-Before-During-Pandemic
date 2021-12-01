@@ -1,4 +1,5 @@
-# Name & Profile
+# Crimes Before/During The Pandemic
+### Name & Profile
 Name: Steven Hernandez
 
 [LinkedIn](https://www.linkedin.com/in/steven-hernandez-736817199/)
@@ -6,7 +7,7 @@ Name: Steven Hernandez
 [Github](https://github.com/Stevenh825-git)
 
 
-## Datesets Used:
+### Datesets Used:
 
 [NYPD Hate Crimes](https://data.cityofnewyork.us/Public-Safety/NYPD-Hate-Crimes/bqiq-cu78)
 
@@ -14,7 +15,7 @@ Name: Steven Hernandez
 
 [NYPD Arrest Data Historic](https://data.cityofnewyork.us/Public-Safety/NYPD-Arrests-Data-Historic-/8h9b-rp9u)
 
-## Crimes Before/During The Pandemic
+
 
 ### Markdown
 
