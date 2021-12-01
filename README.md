@@ -1,5 +1,20 @@
-## Crimes Before/During The Pandemic
+# Name & Profile
+Name: Steven Hernandez
 
+[LinkedIn](https://www.linkedin.com/in/steven-hernandez-736817199/)
+
+[Github](https://github.com/Stevenh825-git)
+
+
+## Datesets Used:
+
+[NYPD Hate Crimes](https://data.cityofnewyork.us/Public-Safety/NYPD-Hate-Crimes/bqiq-cu78)
+
+[NYPD Arrest Data Year-to-Date](https://data.cityofnewyork.us/Public-Safety/NYPD-Arrest-Data-Year-to-Date-/uip8-fykc)
+
+[NYPD Arrest Data Historic](https://data.cityofnewyork.us/Public-Safety/NYPD-Arrests-Data-Historic-/8h9b-rp9u)
+
+## Crimes Before/During The Pandemic
 
 ### Markdown
 
