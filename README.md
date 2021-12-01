@@ -6,6 +6,22 @@ Name: Steven Hernandez
 
 [Github](https://github.com/Stevenh825-git)
 
+[Website Link](https://stevenh825-git.github.io/Crimes-Before-During-Pandemic/)
+
+### Completed:
+-Included all of the visualizations made
+-Added code for most of the visualizations
+-Grouped the visualization by the topic they are discussing
+-Tried to explain what the visualizations show
+-Added links to each dataset, linkedin, and github
+
+### Planning to Complete:
+
+-Add the abstract to the beginning of the website
+-Include a section at the end talking about the final results
+-Include code and discussion for the pie charts
+-Further elaborate some of the visualizations
+-Spell Check
 
 ### Datesets Used:
 
