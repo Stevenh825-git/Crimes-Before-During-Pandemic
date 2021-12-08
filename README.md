@@ -710,25 +710,94 @@ This graph then clarifies the huge differences in the amount of crimes before an
 
 ### Highlighting How Many Crimes Were Committed By A Member of Each Race
 
+### Before The Pandemic
+
+
+```markdown
+#Make the columns AMERICAN_INDIAN_ALASKAN_NATIVE, ASIAN_OR_PACIFIC_ISLANDER, 
+#   BLACK, BLACK_HISPANIC, , WHITE, WHITE_HISPANIC  appear on the index
+empty = boroughPrePandemic.T
+
+#Remove unnecessary columns, so only the columns about the boroughs remain
+empty = empty[3:]
+#Take the sum of each row, so the total cases per race is identified
+sumcol =empty.sum(axis=1)
+
+#Make a new column for the sum
+empty['Total'] = sumcol
+
+#Obtain the percentage by using the total cases per race divided by total cases 
+empty['Percentage'] = (empty['Total'] /sum(empty['Total'])) *100
+
+#Create a variable holding the labels for the Pie Chart
+categories = ["American Indian / Alaskan Native","Asian/Pacific Islander", "Black",
+         "Black Hispanic", "White", "White Hispanic"]
+
+#Create Pie Chart
+plt.pie(empty['Total'] ,labels=categories,autopct='%1.1f%%',
+        explode = (0.2,0.1,0,0,0,0),shadow=True,startangle=160)
+
+plt.title("Percentage of Crimes Committed by Race Before Pandemic",fontsize=20)
+plt.savefig('Pie1.png', bbox_inches='tight')
+
+plt.show()
+```
 ![Pie1](/Crimes-Before-During-Pandemic/assets/css/Pie1.png)
+
+### During The Pandemic
+
+```markdown
+#Make the columns AMERICAN_INDIAN_ALASKAN_NATIVE, ASIAN_OR_PACIFIC_ISLANDER, 
+#   BLACK, BLACK_HISPANIC, , WHITE, WHITE_HISPANIC  appear on the index
+empty = boroughPandemic.T
+
+#Remove unnecessary columns, so only the columns about the boroughs remain
+
+empty = empty[3:]
+
+#Take the sum of each row, so the total cases per race is identified
+
+sumcol =empty.sum(axis=1)
+empty['Total'] = sumcol
+
+
+#Obtain the percentage by using the total cases per race divided by total cases 
+
+empty['Percentage'] = (empty['Total'] /sum(empty['Total'])) *100
+
+#Create a variable holding the labels for the Pie Chart
+
+categories = ["American Indian / Alaskan Native","Asian/Pacific Islander", "Black",
+         "Black Hispanic", "White", "White Hispanic"]
+
+#Create Pie Chart
+
+plt.pie(empty['Total'] ,labels=categories,autopct='%1.1f%%',
+        explode = (0.2,0.1,0,0,0,0),shadow=True,startangle=160)
+
+plt.title("Percentage of Crimes Committed by Race During Pandemic",fontsize=20)
+plt.savefig('Pie2.png', bbox_inches='tight')
+
+plt.show()
+```
 
 ![Pie2](/Crimes-Before-During-Pandemic/assets/css/Pie2.png)
 
 
 ### Citations
 
-[NYPD Hate Crimes](https://data.cityofnewyork.us/Public-Safety/NYPD-Hate-Crimes/bqiq-cu78)
-[NYPD Arrest Data Year-to-Date](https://data.cityofnewyork.us/Public-Safety/NYPD-Arrest-Data-Year-to-Date-/uip8-fykc)
-[NYPD Arrest Data Historic](https://data.cityofnewyork.us/Public-Safety/NYPD-Arrests-Data-Historic-/8h9b-rp9u)
-[Textbook Ch 26.3 (PCA Code)](http://www.textbook.ds100.org/ch/26/pca_in_practice.html)
-[Matplot set_xticklabel](https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_xticklabels.html)
-[Rotate x axis](https://stackoverflow.com/questions/10998621/rotate-axis-text-in-python-matplotlib)
-[datetime.strptime()](https://www.programiz.com/python-programming/datetime/strptime)
-[Textbook for Logistic Regression and Jitter Function](http://www.textbook.ds100.org/ch/24/classification_prob.html)
-[Change Legend Colors](https://stackoverflow.com/questions/23698850/manually-set-color-of-points-in-legend)
-[Change_Legend_Title](https://stackoverflow.com/questions/44620013/title-for-matplotlib-legend)
-[HTML Colors](https://www.w3schools.com/colors/colors_names.asp)
-[How to Plot Pie Chart](https://www.geeksforgeeks.org/plot-a-pie-chart-in-python-using-matplotlib/)
+- [NYPD Hate Crimes](https://data.cityofnewyork.us/Public-Safety/NYPD-Hate-Crimes/bqiq-cu78)
+- [NYPD Arrest Data Year-to-Date](https://data.cityofnewyork.us/Public-Safety/NYPD-Arrest-Data-Year-to-Date-/uip8-fykc)
+- [NYPD Arrest Data Historic](https://data.cityofnewyork.us/Public-Safety/NYPD-Arrests-Data-Historic-/8h9b-rp9u)
+- [Textbook Ch 26.3 (PCA Code)](http://www.textbook.ds100.org/ch/26/pca_in_practice.html)
+- [Matplot set_xticklabel](https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_xticklabels.html)
+- [Rotate x axis](https://stackoverflow.com/questions/10998621/rotate-axis-text-in-python-matplotlib)
+- [datetime.strptime()](https://www.programiz.com/python-programming/datetime/strptime)
+- [Textbook for Logistic Regression and Jitter Function](http://www.textbook.ds100.org/ch/24/classification_prob.html)
+- [Change Legend Colors](https://stackoverflow.com/questions/23698850/manually-set-color-of-points-in-legend)
+- [Change_Legend_Title](https://stackoverflow.com/questions/44620013/title-for-matplotlib-legend)
+- [HTML Colors](https://www.w3schools.com/colors/colors_names.asp)
+- [How to Plot Pie Chart](https://www.geeksforgeeks.org/plot-a-pie-chart-in-python-using-matplotlib/)
 
 
 
