@@ -1,6 +1,4 @@
 # Number of Crimes Before/During The Pandemic
-### Name & Profile
-
 
 ![Front Image](https://user-images.githubusercontent.com/72414338/145263260-75a8b9a2-0fdd-40c1-8f1d-b782dd9d9362.png)
 
@@ -11,8 +9,6 @@ Name: Steven Hernandez
 [Github](https://github.com/Stevenh825-git)
 
 [Website Link](https://stevenh825-git.github.io/Crimes-Before-During-Pandemic/) 
-https://stevenh825-git.github.io/Crimes-Before-During-Pandemic/
-
 
 ### Overview
 
@@ -31,9 +27,27 @@ While investigating this, I conducted a principal component analysis to see the 
 [NYPD Arrest Data Historic](https://data.cityofnewyork.us/Public-Safety/NYPD-Arrests-Data-Historic-/8h9b-rp9u):
 
 Within this dataset, there are 548,836 Rows and 19 Columns. The columns are:
-
-o	['ARREST_KEY', 'ARREST_DATE', 'PD_CD', 'PD_DESC', 'KY_CD', 'OFNS_DESC', 'LAW_CODE', 'LAW_CAT_CD', 'ARREST_BORO', 'ARREST_PRECINCT', 'JURISDICTION_CODE', 'AGE_GROUP', 'PERP_SEX', 'PERP_RACE', 'X_COORD_CD',  'Y_COORD_CD', 'Latitude', 'Longitude', 'Lon_Lat']
-
+```markdown
+- 'ARREST_KEY'
+- 'ARREST_DATE'
+- 'PD_CD'
+- 'PD_DESC'
+- 'KY_CD'
+- 'OFNS_DESC'
+- 'LAW_CODE'
+- 'LAW_CAT_CD'
+- 'ARREST_BORO'
+- 'ARREST_PRECINCT'
+- 'JURISDICTION_CODE'
+- 'AGE_GROUP'
+- 'PERP_SEX'
+- 'PERP_RACE'
+- 'X_COORD_CD'
+- 'Y_COORD_CD'
+- 'Latitude'
+- 'Longitude'
+- 'Lon_Lat'
+```
 The columns used for this project are:
 
 - "ARREST_DATE": Showcases when the crime occured; this will also help obtain the crimes before the pandemic and crimes that occured during the pandemic before 2021
