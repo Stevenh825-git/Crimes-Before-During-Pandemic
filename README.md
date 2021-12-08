@@ -59,7 +59,27 @@ The columns used for this project are:
 
 This dataset contains 115,299 Rows and 19 Columns. The columns include: 
 
-o	['ARREST_KEY', 'ARREST_DATE', 'PD_CD', 'PD_DESC', 'KY_CD', 'OFNS_DESC', 'LAW_CODE', 'LAW_CAT_CD', 'ARREST_BORO', 'ARREST_PRECINCT', 'JURISDICTION_CODE', 'AGE_GROUP', 'PERP_SEX', 'PERP_RACE', 'X_COORD_CD', 'Y_COORD_CD', 'Latitude', 'Longitude', 'New Georeferenced Column']
+```markdown
+- 'ARREST_KEY'
+- 'ARREST_DATE'
+- 'PD_CD'
+- 'PD_DESC'
+- 'KY_CD'
+- 'OFNS_DESC'
+- 'LAW_CODE'
+- 'LAW_CAT_CD'
+- 'ARREST_BORO'
+- 'ARREST_PRECINCT'
+- 'JURISDICTION_CODE'
+- 'AGE_GROUP'
+- 'PERP_SEX'
+- 'PERP_RACE'
+- 'X_COORD_CD'
+- 'Y_COORD_CD'
+- 'Latitude'
+- 'Longitude'
+- 'New Georeferenced Column'
+```
 
 When utilizing this data, the columns used are:
 
@@ -71,7 +91,23 @@ When utilizing this data, the columns used are:
 [NYPD Hate Crimes](https://data.cityofnewyork.us/Public-Safety/NYPD-Hate-Crimes/bqiq-cu78/data): 
 
 This dataset contains 1181 Rows and 14 Columns. The columns include: 
-- ['Full Complaint ID', 'Complaint Year Number', 'Month Number', 'Record Create Date', 'Complaint Precinct Code', 'Patrol Borough Name', 'County', 'Law Code Category Description', 'Offense Description', 'PD Code Description', 'Bias Motive Description', 'Offense Category', 'Arrest Date', 'Arrest Id']
+
+```markdown
+- 'Full Complaint ID'
+- 'Complaint Year Number'
+- 'Month Number'
+- 'Record Create Date'
+- 'Complaint Precinct Code'
+- 'Patrol Borough Name'
+- 'County'
+- 'Law Code Category Description'
+- 'Offense Description'
+- 'PD Code Description'
+- 'Bias Motive Description'
+- 'Offense Category'
+- 'Arrest Date'
+- 'Arrest Id'
+```
 
 For this investigation, the columns of interest are:
 
@@ -681,27 +717,18 @@ This graph then clarifies the huge differences in the amount of crimes before an
 
 ### Citations
 
-
-
 [NYPD Hate Crimes](https://data.cityofnewyork.us/Public-Safety/NYPD-Hate-Crimes/bqiq-cu78)
-https://data.cityofnewyork.us/Public-Safety/NYPD-Hate-Crimes/bqiq-cu78
-
 [NYPD Arrest Data Year-to-Date](https://data.cityofnewyork.us/Public-Safety/NYPD-Arrest-Data-Year-to-Date-/uip8-fykc)
-https://data.cityofnewyork.us/Public-Safety/NYPD-Arrest-Data-Year-to-Date-/uip8-fykc
-
 [NYPD Arrest Data Historic](https://data.cityofnewyork.us/Public-Safety/NYPD-Arrests-Data-Historic-/8h9b-rp9u)
-https://data.cityofnewyork.us/Public-Safety/NYPD-Arrests-Data-Historic-/8h9b-rp9u
-
-
-Textbook Ch 26.3 (PCA Code): http://www.textbook.ds100.org/ch/26/pca_in_practice.html
-Matplot set_xticklabel: https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_xticklabels.html
-Rotate x axis: https://stackoverflow.com/questions/10998621/rotate-axis-text-in-python-matplotlib
-datetime.strptime():https://www.programiz.com/python-programming/datetime/strptime
-Textbook for Logistic Regression and Jitter Function: http://www.textbook.ds100.org/ch/24/classification_prob.html
-Change Legend Colors: https://stackoverflow.com/questions/23698850/manually-set-color-of-points-in-legend
-Change_Legend_Title: https://stackoverflow.com/questions/44620013/title-for-matplotlib-legend
-HTML Colors: https://www.w3schools.com/colors/colors_names.asp
-How to Plot Pie Chart: https://www.geeksforgeeks.org/plot-a-pie-chart-in-python-using-matplotlib/
+[Textbook Ch 26.3 (PCA Code)](http://www.textbook.ds100.org/ch/26/pca_in_practice.html)
+[Matplot set_xticklabel](https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_xticklabels.html)
+[Rotate x axis](https://stackoverflow.com/questions/10998621/rotate-axis-text-in-python-matplotlib)
+[datetime.strptime()](https://www.programiz.com/python-programming/datetime/strptime)
+[Textbook for Logistic Regression and Jitter Function](http://www.textbook.ds100.org/ch/24/classification_prob.html)
+[Change Legend Colors](https://stackoverflow.com/questions/23698850/manually-set-color-of-points-in-legend)
+[Change_Legend_Title](https://stackoverflow.com/questions/44620013/title-for-matplotlib-legend)
+[HTML Colors](https://www.w3schools.com/colors/colors_names.asp)
+[How to Plot Pie Chart](https://www.geeksforgeeks.org/plot-a-pie-chart-in-python-using-matplotlib/)
 
 
 
