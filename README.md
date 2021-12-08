@@ -712,7 +712,7 @@ This graph then clarifies the huge differences in the amount of crimes before an
 
 ### Before The Pandemic
 
-The goal is to create a Pie Chart showcasing the percentages of crimes committed by members of different races. Thus the following code will obtain the necessary data, and plot it onto a Pie Chart. 
+The goal is to create a Pie Chart showcasing the percentage of crimes committed by perpetrators of different races. Thus the following code will obtain the necessary data, and plot it onto a Pie Chart. 
 
 ```markdown
 #Make the columns AMERICAN_INDIAN_ALASKAN_NATIVE, ASIAN_OR_PACIFIC_ISLANDER, 
@@ -745,11 +745,11 @@ plt.show()
 ```
 ![Pie1](/Crimes-Before-During-Pandemic/assets/css/Pie1.png)
 
-As a result, it showcases how these crimes were distributed amongst different races. These categories are how the dataset categorized the perpetrator races, thus left unaltered. Looking at the graph, it shows that plenty of the perpetartors were Black, while more White Hispanics were the perpetrator than Black Hispanic. However, did the percentages chaneg during the Pandemic? 
+These categories are how the dataset categorized the race of the perpetrator races, thus left unaltered. Looking at the graph, it shows  plenty of the perpetartors were Black, while more White Hispanics were the perpetrator than Black Hispanics. However, did the percentages change during the Pandemic? 
 
 ### During The Pandemic
 
-Similarly to before, the goal is to create a similar Pie Chart but with data of the crimes during the Pandemic. 
+Similarly, the goal is to create a Pie Chart, but with data of the crimes during the Pandemic. 
 
 ```markdown
 #Make the columns AMERICAN_INDIAN_ALASKAN_NATIVE, ASIAN_OR_PACIFIC_ISLANDER, 
@@ -788,7 +788,7 @@ plt.show()
 
 ![Pie2](/Crimes-Before-During-Pandemic/assets/css/Pie2.png)
 
-Interestingly, the percentage of the crimes is near identical. This showcases that while there were less crimes during the Pandemic, the distribution of the perpetrator's race was almost unaltered. It is worthy to note, that is result is similar to how crimes were distributed amongst the boroughs. 
+Interestingly, the percentage of the crimes is near identical. This showcases that while there were less crimes during the Pandemic, the distribution of the perpetrator's race was almost unaltered. It is worthy to note, this result is similar to how crimes were distributed amongst the boroughs. 
 
 ### Citations
 
