@@ -1,5 +1,9 @@
 # Number of Crimes Before/During The Pandemic
 ### Name & Profile
+
+
+![Front Image](https://user-images.githubusercontent.com/72414338/145263260-75a8b9a2-0fdd-40c1-8f1d-b782dd9d9362.png)
+
 Name: Steven Hernandez
 
 [LinkedIn](https://www.linkedin.com/in/steven-hernandez-736817199/)
@@ -9,22 +13,10 @@ Name: Steven Hernandez
 [Website Link](https://stevenh825-git.github.io/Crimes-Before-During-Pandemic/) 
 https://stevenh825-git.github.io/Crimes-Before-During-Pandemic/
 
-### Completed:
-- Included all of the visualizations made
-- Added code for most of the visualizations
-- Grouped the visualization by the topic they are discussing
-- Tried to explain what the visualizations show
-- Added links to each dataset, linkedin, and github
 
-### Planning to Complete:
+### Overview
 
-- Add the abstract to the beginning of the website
-- Include a section at the end talking about the final results
-- Include code and discussion for the pie charts
-- Further elaborate some of the visualizations
-- Spell Check
-
-### Datesets Used:
+The goal is to investigate whether the number of crimes is different between before and during the pandemic. Additionally, checking how were the amount of crimes distributed amongst different boroughs and groups of people. To clarify, I would like to investigate which boroughs experienced the most hate crimes, how many Asians were affected, and which races performed the most crimes. To examine this, the following data was obtained from NYC Open Data:
 
 [NYPD Hate Crimes](https://data.cityofnewyork.us/Public-Safety/NYPD-Hate-Crimes/bqiq-cu78)
 
@@ -32,7 +24,52 @@ https://stevenh825-git.github.io/Crimes-Before-During-Pandemic/
 
 [NYPD Arrest Data Historic](https://data.cityofnewyork.us/Public-Safety/NYPD-Arrests-Data-Historic-/8h9b-rp9u)
 
+While investigating this, I conducted a principal component analysis to see the patterns within the data and a logistic regression model to see if the month can predict if a crime is Anti-Asian. Additionally, in order to visualize the findings, many graphs of a few different types were used. In order to utilize bar graphs, line plots, and pie charts, Pandas' groupby method was used to group and manipulate the data. 
 
+### Data
+
+[NYPD Arrest Data Historic](https://data.cityofnewyork.us/Public-Safety/NYPD-Arrests-Data-Historic-/8h9b-rp9u):
+
+Within this dataset, there are 548,836 Rows and 19 Columns. The columns are:
+
+o	['ARREST_KEY', 'ARREST_DATE', 'PD_CD', 'PD_DESC', 'KY_CD', 'OFNS_DESC', 'LAW_CODE', 'LAW_CAT_CD', 'ARREST_BORO', 'ARREST_PRECINCT', 'JURISDICTION_CODE', 'AGE_GROUP', 'PERP_SEX', 'PERP_RACE', 'X_COORD_CD',  'Y_COORD_CD', 'Latitude', 'Longitude', 'Lon_Lat']
+
+The columns used for this project are:
+
+- "ARREST_DATE": Showcases when the crime occured; this will also help obtain the crimes before the pandemic and crimes that occured during the pandemic before 2021
+- "PERP_SEX": Informs whether the crime was done by a male or female
+- "PERP_RACE": Informs what race was the perpetrator of the crime 
+- "ARREST_BORO": Tells what Borough the crime occured
+
+[NYPD Arrest Data Year-to-Date](https://data.cityofnewyork.us/Public-Safety/NYPD-Arrest-Data-Year-to-Date-/uip8-fykc):
+
+This dataset contains 115,299 Rows and 19 Columns. The columns include: 
+
+o	['ARREST_KEY', 'ARREST_DATE', 'PD_CD', 'PD_DESC', 'KY_CD', 'OFNS_DESC', 'LAW_CODE', 'LAW_CAT_CD', 'ARREST_BORO', 'ARREST_PRECINCT', 'JURISDICTION_CODE', 'AGE_GROUP', 'PERP_SEX', 'PERP_RACE', 'X_COORD_CD', 'Y_COORD_CD', 'Latitude', 'Longitude', 'New Georeferenced Column']
+
+When utilizing this data, the columns used are:
+
+- "ARREST_DATE": Showcases when the crime occured 
+- "PERP_SEX": Informs whether the crime was done by a male or female
+- "PERP_RACE": Informs what race was the perpetrator of the crime 
+- "ARREST_BORO": Tells what Borough the crime occured
+
+[NYPD Hate Crimes](https://data.cityofnewyork.us/Public-Safety/NYPD-Hate-Crimes/bqiq-cu78/data): 
+
+This dataset contains 1181 Rows and 14 Columns. The columns include: 
+- ['Full Complaint ID', 'Complaint Year Number', 'Month Number', 'Record Create Date', 'Complaint Precinct Code', 'Patrol Borough Name', 'County', 'Law Code Category Description', 'Offense Description', 'PD Code Description', 'Bias Motive Description', 'Offense Category', 'Arrest Date', 'Arrest Id']
+
+For this investigation, the columns of interest are:
+
+- "Record Create Date": This will reveal when the crimes occured
+- "Patrol Borough Name": Will help split the data by the borough the crime occured in
+- "Month Number": Knowing the month a crime occured can be used for predicting if the crime is Anti-Asian
+- "Offense Category": Will state what type of Hate Crime the crime falls under
+- "Bias Motive Description": Will state the reason for the Hate Crime
+
+### Techniques
+
+The following section will detail each technique used in the project, showcasing the goal of the technique, its code, and its result. 
 
 ### Identifying whether a PCA analysis can be done
 
@@ -626,6 +663,31 @@ This graph then clarifies the huge differences in the amount of crimes before an
 ![Pie1](/Crimes-Before-During-Pandemic/assets/css/Pie1.png)
 
 ![Pie2](/Crimes-Before-During-Pandemic/assets/css/Pie2.png)
+
+
+### Citations
+
+
+
+[NYPD Hate Crimes](https://data.cityofnewyork.us/Public-Safety/NYPD-Hate-Crimes/bqiq-cu78)
+https://data.cityofnewyork.us/Public-Safety/NYPD-Hate-Crimes/bqiq-cu78
+
+[NYPD Arrest Data Year-to-Date](https://data.cityofnewyork.us/Public-Safety/NYPD-Arrest-Data-Year-to-Date-/uip8-fykc)
+https://data.cityofnewyork.us/Public-Safety/NYPD-Arrest-Data-Year-to-Date-/uip8-fykc
+
+[NYPD Arrest Data Historic](https://data.cityofnewyork.us/Public-Safety/NYPD-Arrests-Data-Historic-/8h9b-rp9u)
+https://data.cityofnewyork.us/Public-Safety/NYPD-Arrests-Data-Historic-/8h9b-rp9u
+
+
+Textbook Ch 26.3 (PCA Code): http://www.textbook.ds100.org/ch/26/pca_in_practice.html
+Matplot set_xticklabel: https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_xticklabels.html
+Rotate x axis: https://stackoverflow.com/questions/10998621/rotate-axis-text-in-python-matplotlib
+datetime.strptime():https://www.programiz.com/python-programming/datetime/strptime
+Textbook for Logistic Regression and Jitter Function: http://www.textbook.ds100.org/ch/24/classification_prob.html
+Change Legend Colors: https://stackoverflow.com/questions/23698850/manually-set-color-of-points-in-legend
+Change_Legend_Title: https://stackoverflow.com/questions/44620013/title-for-matplotlib-legend
+HTML Colors: https://www.w3schools.com/colors/colors_names.asp
+How to Plot Pie Chart: https://www.geeksforgeeks.org/plot-a-pie-chart-in-python-using-matplotlib/
 
 
 
