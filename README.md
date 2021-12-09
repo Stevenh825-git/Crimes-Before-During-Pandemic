@@ -12,7 +12,7 @@ Name: Steven Hernandez
 
 ### Overview
 
-The goal is to investigate whether the number of crimes is different between before and during the pandemic. Additionally, checking how were the amount of crimes distributed amongst different boroughs and groups of people. To clarify, I would like to investigate which boroughs experienced the most hate crimes, how many Asians were affected, and which races performed the most crimes. To examine this, the following data was obtained from NYC Open Data:
+The goal is to investigate whether the number of crimes is different between before and during the pandemic. Additionally, checking how were the amount of crimes distributed amongst different boroughs and groups of people. To clarify, I would like to investigate which boroughs experienced the most hate crimes, how many Asians were affected, and which race the perpetraror of a crime was more often to be. To examine this, the following data was obtained from NYC Open Data:
 
 [NYPD Hate Crimes](https://data.cityofnewyork.us/Public-Safety/NYPD-Hate-Crimes/bqiq-cu78)
 
@@ -83,7 +83,7 @@ This dataset contains 115,299 Rows and 19 Columns. The columns include:
 
 When utilizing this data, the columns used are:
 
-- "ARREST_DATE": Showcases when the crime occured 
+- "ARREST_DATE": Showcases when the crime occured; where all crimes occurred sometime in 2021
 - "PERP_SEX": Informs whether the crime was done by a male or female
 - "PERP_RACE": Informs what race was the perpetrator of the crime 
 - "ARREST_BORO": Tells what Borough the crime occured
@@ -119,11 +119,11 @@ For this investigation, the columns of interest are:
 
 ### Techniques
 
-The following section will detail each technique used in the project, showcasing the goal of the technique, its code, and its result. 
+The following section will detail each technique used in the project, showcasing the goal of the technique, the code, and the result. 
 
 ### Identifying whether a PCA analysis can be done
 
-The goal is to see whether a 2 dimensional graph is enough to showcase patterns in the data using PCA. 
+The goal is to see whether a 2 dimensional graph is enough to showcase patterns in the data using PCA. Ideally, the graph could be used to higlight the distribution of the type of Hate Crime. 
 
 ```markdown
 #Represent the categorical data with numbers
@@ -149,7 +149,7 @@ This was the code used to generate the following graph:
 As a result, 2 dimensions is capable of showcasing the data's patterns. Or more specifically, 2 dimensions can be used to determine the spread of the different types of Hate Crimes. 
 
 
-### Performing a PCA Analysis on the Data
+### Performing a Principal Component Analysis on the Data
 
 Now that we now this, we can generate the principal components from performaing matrix multiplication with U and S; where they were both created from the SVD funciton earlier.
 
@@ -166,7 +166,7 @@ case2d = pd.DataFrame({
     'pc2': pcs[:, 1]
 }).merge(Hate_Crimes, left_on='case', right_on=Hate_Crimes.index)
 
-#Thsi function will be used to remove the data from completely overlapping
+#This function will be used to remove the data from completely overlapping
 def jitter_df(df, x_col, y_col):
     x_jittered = df[x_col] + np.random.normal(scale=0.04, size=len(df))
     y_jittered = df[y_col] + np.random.normal(scale=0.06, size=len(df))
@@ -194,7 +194,8 @@ Now that we see the pattern of the data, it is important to view how many of eac
 Using the following code:
 ```markdown
 
-#Can group by Offense Category and count how many of type of hate crime there are
+#Can group by Offense Category 
+#Count how many of each type of hate crime there are
 
 amount_crimes = Hate_Crimes.groupby('Offense Category').agg(
        Number_of_Cases=pd.NamedAgg(column="Full Complaint ID", aggfunc="count"))
@@ -216,14 +217,15 @@ This graph showcases that similarly to the PCA, religion, race, and sexual orien
 
 ### Different Race Motivated Hate Crimes
 
-Now that it is clear there are plenty of differnt Hate Crimes, it is important to understand these are all categories. As a result, there are plenty of different type of race motivated crimes. Therefore, it is importnat to see which race was the most targeted from 2019-2021. 
+While clearly there are different Hate Crimes, it is still unclear whether Asian's suffered the most crimes. As a result, it is important to see which race was the most targeted from 2019-2021. 
 
 ```markdown
 
 #Get the rows exclusive to Race/Color and Ethnicity
 race_ethni_crimes = Hate_Crimes.loc[(Hate_Crimes['Offense Category'] == 'Race/Color') | (Hate_Crimes['Offense Category'] == 'Ethnicity/National Origin/Ancestry')]
 
-#Group the data by Bias Motive Descirption, which is the reason for the Hate Crime. Also, count how many cases of each group there are. 
+#Group the data by Bias Motive Descirption, which is the reason for the Hate Crime.
+#Also, count how many cases of each group there are. 
 amount_race = race_ethni_crimes.groupby('Bias Motive Description').agg(
        Number_of_Cases=pd.NamedAgg(column="Full Complaint ID", aggfunc="count"))
 
@@ -253,7 +255,8 @@ race_ethni_crimes['Record Create Date'] = pd.to_datetime(race_ethni_crimes['Reco
 #Obtain all of the Hate Crimes that were targetting Asians. 
 anti_asian = race_ethni_crimes.loc[race_ethni_crimes['Bias Motive Description'] == "ANTI-ASIAN"]
 
-#This function will determine whether the dates within a column happened before Covid-19 was declared by WHO, or during the Pandemic.
+#This function will determine whether the dates within a column
+#happened before Covid-19 was declared by WHO, or during the Pandemic.
 def prepostPandemic(date):
     
     temp = date['Record Create Date']
@@ -274,7 +277,8 @@ anti_asian['Before/During Pandemic'] = prepostPandemic(anti_asian)
 
 
 ```markdown
-#Now it is easier to group the crimes by their occurance, and count how many of each there are
+#Now it is easier to group the crimes by their occurance,
+#and count how many of each there are
 temp = anti_asian.groupby('Before/During Pandemic').agg(
        Number_of_Cases=pd.NamedAgg(column="Full Complaint ID", aggfunc="count"))
 
@@ -359,13 +363,13 @@ plt.plot(staten["Month Number"],staten["Number_of_Cases"], 'm')
 plt.savefig('HateCrimesPerBorough.png', bbox_inches='tight')
 plt.show()
 ```
-This would generate an lmplot where there are 5 colorcoded lines corresponding to one of the 5 boroughs. 
+This would generate an line plot where 5 colorcoded lines are corresponding to one of the 5 boroughs. 
 
 ![HateCrimesPerBorough](/Crimes-Before-During-Pandemic/assets/css/HateCrimesPerBorough.png)
 
-This lmplot showcases that the Hate Crime dataset, which spans from 01-01-2019 to 09-30-2021, contains a lot of data for Brookklyn and Manhattan, whereas the Bronx and Staten Island faced the least hate crimes. It is worth noting that the decrease in cases for all 5 boroughs during October to December most likely stems that there weren't any data yet for those months within 2021, thus a decrease in cases occuring during those months overall. 
+This lmplot showcases that the Hate Crime dataset, which spans from 01-01-2019 to 09-30-2021, contains a lot of data for Brooklyn and Manhattan, whereas the Bronx and Staten Island faced the least hate crimes. However, the decrease in cases for all 5 boroughs during October to December is seemingly the result of the data not yet existing for those months within 2021. 
 
-This lead to the question: How many of the Hate Crimes within this graph occured before the Pandemic?
+The finding of this data leads to the question: How many of the Hate Crimes within this graph occured before the Pandemic?
 
 ```markdown
 #Goal is to group the data by the borough, but also if it occured before or during the pandemic 
@@ -394,7 +398,7 @@ plt.show()
 ```
 ![HateCrimesBeforeDuringPandemic](/Crimes-Before-During-Pandemic/assets/css/HateCrimesBeforeDuringPandemic.png)
 
-This graph shows clearly how many Hate Crimes each borough experienced. One can easily see that Brooklyn and Manhattan are completely dominating the other boroughs, regardless if the case occured before or during the pandemic. 
+This graph shows how many Hate Crimes each borough experienced. Seemingly, Brooklyn and Manhattan are completely dominating the other boroughs, regardless if the case occured before or during the pandemic. 
 
 It is also worth noting that Manhattan experiences way more Hate Crimes during the Pandemic than any other borough. 
 
@@ -509,7 +513,7 @@ Therefore, once again, the month a case occurred cannot be used to predict wheth
 
 Unlike before, where the data so far was focused on Hate Crimes, this time the data encompasses all types of crimes. The goal now is to see how these cases are distributed amongst different groups of people.
 
-Before investigations begin, it is important to clean the data first. Using the two datasets: ____ and ______, the code below gets the information ready. 
+Before investigations begin, it is important to clean the data first. Using the two datasets: _NYPD Arrest Data Year-to-Date_  and _NYPD Arrest Data Historic_, the code below gets the information ready. 
 
 ```markdown
 
@@ -548,7 +552,7 @@ Now there are two dataframes, where one hold all the arrests between 03/11/2018 
 
 ### Differences Amongst Gender
 
-After obtaining data showcasing the amount of cases per borough, seperated by gender for both before the pandemic and during, the goal is to showcase the data in 4 seperate columns on a bar graph. 
+After obtaining data showcasing the amount of cases per borough(seperated by gender for both before the pandemic and during), the goal is to showcase the data in 4 seperate columns on a bar graph. 
 
 ```markdown
 
